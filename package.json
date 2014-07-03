@@ -1,0 +1,31 @@
+{
+  "name": "hexo-front-matter",
+  "version": "0.0.1",
+  "description": "Front-matter parser.",
+  "main": "index",
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hexojs/front-matter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hexojs/front-matter/issues"
+  },
+  "keywords": [
+    "front-matter",
+    "yaml",
+    "yml",
+    "hexo"
+  ],
+  "author": "Tommy Chen <tommy351@gmail.com> (http://zespia.tw)",
+  "license": "MIT",
+  "dependencies": {
+    "yamljs": "0.1.4"
+  },
+  "devDependencies": {
+    "mocha": "^1.18.2",
+    "chai": "^1.9.1"
+  }
+}
