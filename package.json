@@ -1,6 +1,6 @@
 {
   "name": "hexo-front-matter",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Front-matter parser.",
   "main": "index",
   "scripts": {

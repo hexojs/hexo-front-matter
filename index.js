@@ -15,6 +15,18 @@ var split = exports.split = function(str){
   return {data: data, content: content};
 };
 
+var escapeYaml = exports.escape = function(str){
+  return str.replace(/\n(\t+)/g, function(match, tabs){
+    var result = '\n';
+
+    for (var i = 0, len = tabs.length; i < len; i++){
+      result += '  ';
+    }
+
+    return result;
+  });
+};
+
 var parse = exports.parse = function(str){
   var splitData = split(str),
     raw = splitData.data,
@@ -23,7 +35,7 @@ var parse = exports.parse = function(str){
   if (!raw) return {_content: str};
 
   try {
-    var data = yaml.parse(raw);
+    var data = yaml.parse(escapeYaml(raw));
 
     if (typeof data === 'object'){
       data._content = content;

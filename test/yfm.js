@@ -5,6 +5,37 @@ var yaml = require('yamljs'),
 describe('yfm', function(){
   var yfm = require('../index');
 
+  describe('split', function(){
+    it('with data', function(){
+      yfm.split([
+        'foo',
+        '---',
+        'bar'
+      ].join('\n')).should.eql({data: 'foo', content: 'bar'});
+    });
+
+    it('without data', function(){
+      yfm.split([
+        'foo',
+        'bar'
+      ].join('\n')).should.eql({content: 'foo\nbar'});
+    });
+  });
+
+  describe('escape', function(){
+    it('escape', function(){
+      yfm.escape([
+        'foo',
+        '\tbar',
+        '\t\tbaz'
+      ].join('\n')).should.eql([
+        'foo',
+        '  bar',
+        '    baz'
+      ].join('\n'));
+    });
+  });
+
   describe('parse', function(){
     it('only content', function(){
       var str = [

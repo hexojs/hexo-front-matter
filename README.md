@@ -4,6 +4,24 @@
 
 Front-matter parser.
 
+## API
+
+### parse(str)
+
+Parses YAML front-matter.
+
+### stringify(obj)
+
+Converts an object to YAML front-matter string.
+
+### split(str)
+
+Splits a YAML front-matter string.
+
+### escape(str)
+
+Converts hard tabs to soft tabs.
+
 ## License
 
 MIT
