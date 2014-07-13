@@ -1,5 +1,4 @@
-var yaml = require('yamljs'),
-  should = require('chai').should(),
+var should = require('chai').should(),
   moment = require('moment');
 
 describe('yfm', function(){
