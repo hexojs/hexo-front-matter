@@ -1,6 +1,6 @@
 {
   "name": "hexo-front-matter",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Front-matter parser.",
   "main": "index",
   "scripts": {
@@ -22,7 +22,7 @@
   "author": "Tommy Chen <tommy351@gmail.com> (http://zespia.tw)",
   "license": "MIT",
   "dependencies": {
-    "yamljs": "0.1.4"
+    "js-yaml": "^3.1.0"
   },
   "devDependencies": {
     "mocha": "^1.18.2",

@@ -1,4 +1,4 @@
-var yaml = require('yamljs'),
+var yaml = require('js-yaml'),
   rYFM = /^(?:-{3,}\s*\n+)?([\s\S]+?)(?:\n+-{3,})(?:\s*\n+([\s\S]*))?/;
 
 exports = module.exports = function(str){
@@ -35,7 +35,7 @@ var parse = exports.parse = function(str){
   if (!raw) return {_content: str};
 
   try {
-    var data = yaml.parse(escapeYaml(raw));
+    var data = yaml.load(escapeYaml(raw));
 
     if (typeof data === 'object'){
       data._content = content;
@@ -93,7 +93,7 @@ exports.stringify = function(obj){
 
   if (!Object.keys(data).length) return content;
 
-  var result = yaml.stringify(data);
+  var result = yaml.dump(data);
 
   if (dateKeys.length){
     var date;
