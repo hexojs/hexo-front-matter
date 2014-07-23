@@ -192,6 +192,19 @@ describe('yfm', function(){
       data.title.should.eql('Hello World');
       data._content.should.eql('Hello\n-----------------------------------');
     });
+
+    // Date parsing bug (issue #1)
+    it('date', function(){
+      var now = moment();
+
+      var str = [
+        'date: ' + now.format('YYYY-MM-DD HH:mm:ss'),
+        '---'
+      ].join('\n');
+
+      var data = yfm.parse(str);
+      parseInt(data.date.getTime() / 1000).should.eql(parseInt(now.valueOf() / 1000));
+    });
   });
 
   describe('stringify', function(){

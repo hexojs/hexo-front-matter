@@ -1,4 +1,6 @@
 var yaml = require('js-yaml'),
+  util = require('util'),
+  isDate = util.isDate,
   rYFM = /^(?:-{3,}\s*\n+)?([\s\S]+?)(?:\n+-{3,})(?:\s*\n+([\s\S]*))?/;
 
 exports = module.exports = function(str){
@@ -35,7 +37,20 @@ var parse = exports.parse = function(str, options){
   if (!raw) return {_content: str};
 
   try {
-    var data = yaml.load(escapeYaml(raw), options);
+    var data = yaml.load(escapeYaml(raw), options),
+      keys = Object.keys(data),
+      key,
+      date;
+
+    // Convert timezone
+    for (var i = 0, len = keys.length; i < len; i++){
+      key = keys[i];
+
+      if (isDate(data[key])){
+        date = data[key];
+        data[key] = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+      }
+    }
 
     if (typeof data === 'object'){
       data._content = content;
@@ -53,14 +68,12 @@ var formatNumber = function(num){
 };
 
 var formatDate = function(date){
-  var out = date.getFullYear() + '-';
-  out += formatNumber(date.getMonth() + 1) + '-';
-  out += formatNumber(date.getDate()) + ' ';
-  out += formatNumber(date.getHours()) + ':';
-  out += formatNumber(date.getMinutes()) + ':';
-  out += formatNumber(date.getSeconds());
-
-  return out;
+  return date.getFullYear() + '-' +
+    formatNumber(date.getMonth() + 1) + '-' +
+    formatNumber(date.getDate()) + ' ' +
+    formatNumber(date.getHours()) + ':' +
+    formatNumber(date.getMinutes()) + ':' +
+    formatNumber(date.getSeconds());
 };
 
 exports.stringify = function(obj, options){
