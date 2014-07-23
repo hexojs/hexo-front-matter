@@ -6,13 +6,13 @@ Front-matter parser.
 
 ## API
 
-### parse(str)
+### parse(str, [options])
 
-Parses YAML front-matter.
+Parses YAML front-matter. See [js-yaml] for more info.
 
-### stringify(obj)
+### stringify(obj, [options])
 
-Converts an object to YAML front-matter string.
+Converts an object to YAML front-matter string. See [js-yaml] for more info.
 
 ### split(str)
 
@@ -25,3 +25,5 @@ Converts hard tabs to soft tabs.
 ## License
 
 MIT
+
+[js-yaml]: https://github.com/nodeca/js-yaml

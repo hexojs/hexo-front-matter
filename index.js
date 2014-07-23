@@ -27,7 +27,7 @@ var escapeYaml = exports.escape = function(str){
   });
 };
 
-var parse = exports.parse = function(str){
+var parse = exports.parse = function(str, options){
   var splitData = split(str),
     raw = splitData.data,
     content = splitData.content;
@@ -35,7 +35,7 @@ var parse = exports.parse = function(str){
   if (!raw) return {_content: str};
 
   try {
-    var data = yaml.load(escapeYaml(raw));
+    var data = yaml.load(escapeYaml(raw), options);
 
     if (typeof data === 'object'){
       data._content = content;
@@ -63,7 +63,7 @@ var formatDate = function(date){
   return out;
 };
 
-exports.stringify = function(obj){
+exports.stringify = function(obj, options){
   var content = obj._content || '',
     keys = Object.keys(obj);
 
@@ -93,7 +93,7 @@ exports.stringify = function(obj){
 
   if (!Object.keys(data).length) return content;
 
-  var result = yaml.dump(data);
+  var result = yaml.dump(data, options);
 
   if (dateKeys.length){
     var date;
