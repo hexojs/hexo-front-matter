@@ -22,11 +22,11 @@
   "author": "Tommy Chen <tommy351@gmail.com> (http://zespia.tw)",
   "license": "MIT",
   "dependencies": {
-    "js-yaml": "^3.1.0"
+    "js-yaml": "^3.2.3"
   },
   "devDependencies": {
-    "mocha": "^1.18.2",
-    "chai": "^1.9.1",
-    "moment": "^2.7.0"
+    "mocha": "^2.0.1",
+    "chai": "^1.10.0",
+    "moment": "^2.8.4"
   }
 }
