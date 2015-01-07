@@ -1,6 +1,6 @@
 # Front-matter
 
-[![Build Status](https://travis-ci.org/hexojs/front-matter.svg?branch=master)](https://travis-ci.org/hexojs/front-matter)  [![NPM version](https://badge.fury.io/js/hexo-front-matter.svg)](http://badge.fury.io/js/hexo-front-matter)
+[![Build Status](https://travis-ci.org/hexojs/front-matter.svg?branch=master)](https://travis-ci.org/hexojs/front-matter)  [![NPM version](https://badge.fury.io/js/hexo-front-matter.svg)](http://badge.fury.io/js/hexo-front-matter) [![Coverage Status](https://img.shields.io/coveralls/hexojs/front-matter.svg)](https://coveralls.io/r/hexojs/front-matter?branch=master)
 
 Front-matter parser.
 

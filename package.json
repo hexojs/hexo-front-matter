@@ -2,17 +2,17 @@
   "name": "hexo-front-matter",
   "version": "0.0.4",
   "description": "Front-matter parser.",
-  "main": "index",
+  "main": "lib/front_matter",
   "scripts": {
-    "test": "make test"
+    "test": "gulp test"
   },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/hexojs/front-matter.git"
+  "directories": {
+    "lib": "./lib"
   },
-  "bugs": {
-    "url": "https://github.com/hexojs/front-matter/issues"
+  "engines": {
+    "node": ">= 0.10.0"
   },
+  "repository": "hexojs/front-matter",
   "keywords": [
     "front-matter",
     "yaml",
@@ -22,11 +22,18 @@
   "author": "Tommy Chen <tommy351@gmail.com> (http://zespia.tw)",
   "license": "MIT",
   "dependencies": {
-    "js-yaml": "^3.1.0"
+    "js-yaml": "^3.2.5"
   },
   "devDependencies": {
-    "mocha": "^1.18.2",
     "chai": "^1.9.1",
-    "moment": "^2.7.0"
+    "coveralls": "^2.11.2",
+    "gulp": "^3.8.9",
+    "gulp-istanbul": "^0.5.0",
+    "gulp-jshint": "^1.8.6",
+    "gulp-load-plugins": "^0.8.0",
+    "gulp-mocha": "^2.0.0",
+    "jshint-stylish": "^1.0.0",
+    "mocha": "^2.0.1",
+    "rimraf": "^2.2.8"
   }
 }

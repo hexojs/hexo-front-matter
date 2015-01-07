@@ -1,8 +1,8 @@
-var should = require('chai').should(),
-  moment = require('moment');
+var should = require('chai').should();
+var moment = require('moment');
 
-describe('yfm', function(){
-  var yfm = require('../index');
+describe('Front-matter', function(){
+  var yfm = require('..');
 
   describe('split', function(){
     it('with data', function(){
