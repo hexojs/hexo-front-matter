@@ -18,7 +18,8 @@
     "front matter",
     "yaml",
     "yml",
-    "hexo"
+    "hexo",
+    "json"
   ],
   "author": "Tommy Chen <tommy351@gmail.com> (http://zespia.tw)",
   "license": "MIT",

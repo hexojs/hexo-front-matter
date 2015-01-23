@@ -5,19 +5,160 @@ describe('Front-matter', function(){
   var yfm = require('..');
 
   describe('split', function(){
-    it('with data', function(){
-      yfm.split([
+    it('yaml mode', function(){
+      var str = [
+        '---',
         'foo',
         '---',
         'bar'
-      ].join('\n')).should.eql({data: 'foo', content: 'bar'});
+      ].join('\n');
+
+      yfm.split(str).should.eql({
+        data: 'foo',
+        content: 'bar',
+        separator: '---',
+        prefixSeparator: false
+      });
+    });
+
+    it('json mode', function(){
+      var str = [
+        ';;;',
+        'foo',
+        ';;;',
+        'bar'
+      ].join('\n');
+
+      yfm.split(str).should.eql({
+        data: 'foo',
+        content: 'bar',
+        separator: ';;;',
+        prefixSeparator: false
+      });
+    });
+
+    it('yaml mode: new', function(){
+      var str = [
+        'foo',
+        '---',
+        'bar'
+      ].join('\n');
+
+      yfm.split(str).should.eql({
+        data: 'foo',
+        content: 'bar',
+        separator: '---',
+        prefixSeparator: true
+      });
+    });
+
+    it('json mode: new', function(){
+      var str = [
+        'foo',
+        ';;;',
+        'bar'
+      ].join('\n');
+
+      yfm.split(str).should.eql({
+        data: 'foo',
+        content: 'bar',
+        separator: ';;;',
+        prefixSeparator: true
+      });
     });
 
     it('without data', function(){
-      yfm.split([
+      var str = [
         'foo',
         'bar'
-      ].join('\n')).should.eql({content: 'foo\nbar'});
+      ].join('\n');
+
+      yfm.split(str).should.eql({
+        content: str
+      });
+    });
+
+    it('unbalanced separator', function(){
+      var str = [
+        '------',
+        'foo',
+        '---',
+        'bar'
+      ].join('\n');
+
+      yfm.split(str).should.eql({
+        content: str
+      });
+    });
+
+    it('long separator', function(){
+      var str = [
+        '------',
+        'foo',
+        '------',
+        'bar'
+      ].join('\n');
+
+      yfm.split(str).should.eql({
+        data: 'foo',
+        content: 'bar',
+        separator: '------',
+        prefixSeparator: false
+      });
+    });
+
+    it('long separator: new', function(){
+      var str = [
+        'foo',
+        '------',
+        'bar'
+      ].join('\n');
+
+      yfm.split(str).should.eql({
+        data: 'foo',
+        content: 'bar',
+        separator: '------',
+        prefixSeparator: true
+      });
+    });
+
+    it('extra separator', function(){
+      var str = [
+        'foo',
+        '---',
+        'bar',
+        '---',
+        'baz'
+      ].join('\n');
+
+      yfm.split(str).should.eql({
+        data: 'foo',
+        content: 'bar\n---\nbaz',
+        separator: '---',
+        prefixSeparator: true
+      });
+    });
+
+    it('inline separator', function(){
+      var str = [
+        '---foo',
+        '---',
+        'bar'
+      ].join('\n');
+
+      yfm.split(str).should.eql({
+        content: str
+      });
+    });
+
+    it('inline separator: new', function(){
+      var str = [
+        '---bar'
+      ].join('\n');
+
+      yfm.split(str).should.eql({
+        content: str
+      });
     });
   });
 
@@ -42,155 +183,64 @@ describe('Front-matter', function(){
         'bar'
       ].join('\n');
 
-      var data = yfm.parse(str);
-      data._content.should.eql(str);
+      yfm.parse(str).should.eql({
+        _content: str
+      });
     });
 
-    it('only content (with ---)', function(){
-      var str = [
-        'foo',
-        '---',
-        'str'
-      ].join('\n');
-
-      var data = yfm.parse(str);
-      data._content.should.eql(str);
-    });
-
-    it('new style', function(){
+    it('yaml', function(){
       var str = [
         'layout: post',
         '---',
-        '123'
+        'bar'
       ].join('\n');
 
-      var data = yfm.parse(str);
-      data.layout.should.eql('post');
-      data._content.should.eql('123');
+      yfm.parse(str).should.eql({
+        layout: 'post',
+        _content: 'bar'
+      });
     });
 
-    it('new style (without content)', function(){
+    it('json', function(){
       var str = [
-        'layout: post',
-        '---'
+        '"layout": false,',
+        '"my_list": [',
+        '  "one",',
+        '  "two"',
+        ']',
+        ';;;',
+        'bar'
       ].join('\n');
 
-      var data = yfm.parse(str);
-      data.layout.should.eql('post');
-      data._content.should.eql('');
+      yfm.parse(str).should.eql({
+        layout: false,
+        my_list: ['one', 'two'],
+        _content: 'bar'
+      });
     });
 
-    it('new style (trim)', function(){
+    it('invalid yaml', function(){
       var str = [
-        '',
-        'layout: post',
-        '',
+        'layout',
         '---',
-        '',
-        '',
-        '',
-        '123'
+        'bar'
       ].join('\n');
 
-      var data = yfm.parse(str);
-      data.layout.should.eql('post');
-      data._content.should.eql('123');
+      yfm.parse(str).should.eql({
+        _content: str
+      });
     });
 
-    it('new style (more than 3 dashes)', function(){
+    it('invalid json', function(){
       var str = [
-        'layout: post',
-        '------',
-        '123'
+        'layout',
+        ';;;',
+        'bar'
       ].join('\n');
 
-      var data = yfm.parse(str);
-      data.layout.should.eql('post');
-      data._content.should.eql('123');
-    });
-
-    it('old style', function(){
-      var str = [
-        '---',
-        'layout: post',
-        '---',
-        '123'
-      ].join('\n');
-
-      var data = yfm.parse(str);
-      data.layout.should.eql('post');
-      data._content.should.eql('123');
-    });
-
-    it('old style (without content)', function(){
-      var str = [
-        '---',
-        'layout: post',
-        '---'
-      ].join('\n');
-
-      var data = yfm.parse(str);
-      data.layout.should.eql('post');
-      data._content.should.eql('');
-    });
-
-    it('old style (trim)', function(){
-      var str = [
-        '---',
-        '',
-        'layout: post',
-        '',
-        '---',
-        '',
-        '',
-        '',
-        '123'
-      ].join('\n');
-
-      var data = yfm.parse(str);
-      data.layout.should.eql('post');
-      data._content.should.eql('123');
-    });
-
-    it('old style (more than 3 dashes)', function(){
-      var str = [
-        '----',
-        'layout: post',
-        '------',
-        '123'
-      ].join('\n');
-
-      var data = yfm.parse(str);
-      data.layout.should.eql('post');
-      data._content.should.eql('123');
-    });
-
-    it('with inline separator', function(){
-      var str = [
-        'layout: post',
-        'title: This title including --------',
-        '---',
-        '123'
-      ].join('\n');
-
-      var data = yfm.parse(str);
-      data.layout.should.eql('post');
-      data.title.should.eql('This title including --------');
-      data._content.should.eql('123');
-    });
-
-    it('with another separator', function(){
-      var str = [
-        'title: Hello World',
-        '---',
-        '',
-        'Hello',
-        '-----------------------------------'
-      ].join('\n');
-
-      var data = yfm.parse(str);
-      data.title.should.eql('Hello World');
-      data._content.should.eql('Hello\n-----------------------------------');
+      yfm.parse(str).should.eql({
+        _content: str
+      });
     });
 
     // Date parsing bug (issue #1)
@@ -208,7 +258,7 @@ describe('Front-matter', function(){
   });
 
   describe('stringify', function(){
-    it('with data', function(){
+    it('yaml', function(){
       var now = new Date();
 
       var data = {
@@ -227,12 +277,77 @@ describe('Front-matter', function(){
       ].join('\n'));
     });
 
-    it('without data', function(){
+    it('json', function(){
+      var now = new Date();
+
       var data = {
+        layout: 'post',
+        created: now,
+        blank: null,
+        tags: ['foo', 'bar'],
         _content: '123'
       };
 
-      yfm.stringify(data).should.eql('123');
+      yfm.stringify(data, {mode: 'json'}).should.eql([
+        '"layout": "post",',
+        '"created": "' + now.toISOString() + '",',
+        '"blank": null,',
+        '"tags": [',
+        '  "foo",',
+        '  "bar"',
+        ']',
+        ';;;',
+        '123'
+      ].join('\n'));
+    });
+
+    it('separator', function(){
+      var data = {
+        layout: 'post',
+        _content: 'hello'
+      };
+
+      yfm.stringify(data, {separator: '------'}).should.eql([
+        'layout: post',
+        '------',
+        'hello'
+      ].join('\n'));
+    });
+
+    it('prefixSeparator', function(){
+      var data = {
+        layout: 'post',
+        _content: 'hello'
+      };
+
+      yfm.stringify(data, {prefixSeparator: true}).should.eql([
+        '---',
+        'layout: post',
+        '---',
+        'hello'
+      ].join('\n'));
+    });
+
+    it('prefixSeparator + custom separator', function(){
+      var data = {
+        layout: 'post',
+        _content: 'hello'
+      };
+
+      yfm.stringify(data, {separator: '------', prefixSeparator: true}).should.eql([
+        '------',
+        'layout: post',
+        '------',
+        'hello'
+      ].join('\n'));
+    });
+
+    it('without data', function(){
+      var data = {
+        _content: 'foo'
+      };
+
+      yfm.stringify(data).should.eql('foo');
     });
   });
 });
