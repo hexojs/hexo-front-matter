@@ -17,7 +17,7 @@ describe('Front-matter', function(){
         data: 'foo',
         content: 'bar',
         separator: '---',
-        prefixSeparator: false
+        prefixSeparator: true
       });
     });
 
@@ -33,7 +33,7 @@ describe('Front-matter', function(){
         data: 'foo',
         content: 'bar',
         separator: ';;;',
-        prefixSeparator: false
+        prefixSeparator: true
       });
     });
 
@@ -48,7 +48,7 @@ describe('Front-matter', function(){
         data: 'foo',
         content: 'bar',
         separator: '---',
-        prefixSeparator: true
+        prefixSeparator: false
       });
     });
 
@@ -63,7 +63,7 @@ describe('Front-matter', function(){
         data: 'foo',
         content: 'bar',
         separator: ';;;',
-        prefixSeparator: true
+        prefixSeparator: false
       });
     });
 
@@ -103,7 +103,7 @@ describe('Front-matter', function(){
         data: 'foo',
         content: 'bar',
         separator: '------',
-        prefixSeparator: false
+        prefixSeparator: true
       });
     });
 
@@ -118,7 +118,7 @@ describe('Front-matter', function(){
         data: 'foo',
         content: 'bar',
         separator: '------',
-        prefixSeparator: true
+        prefixSeparator: false
       });
     });
 
@@ -135,7 +135,7 @@ describe('Front-matter', function(){
         data: 'foo',
         content: 'bar\n---\nbaz',
         separator: '---',
-        prefixSeparator: true
+        prefixSeparator: false
       });
     });
 
