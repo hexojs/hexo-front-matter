@@ -1,6 +1,6 @@
 {
   "name": "hexo-front-matter",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Front-matter parser.",
   "main": "lib/front_matter",
   "scripts": {
@@ -12,7 +12,7 @@
   "engines": {
     "node": ">= 0.10.0"
   },
-  "repository": "hexojs/front-matter",
+  "repository": "hexojs/hexo-front-matter",
   "keywords": [
     "front-matter",
     "front matter",

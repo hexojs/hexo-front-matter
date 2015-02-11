@@ -1,6 +1,6 @@
-# Front-matter
+# hexo-front-matter
 
-[![Build Status](https://travis-ci.org/hexojs/front-matter.svg?branch=master)](https://travis-ci.org/hexojs/front-matter)  [![NPM version](https://badge.fury.io/js/hexo-front-matter.svg)](http://badge.fury.io/js/hexo-front-matter) [![Coverage Status](https://coveralls.io/repos/hexojs/front-matter/badge.svg?branch=master)](https://coveralls.io/r/hexojs/front-matter?branch=master)
+[![Build Status](https://travis-ci.org/hexojs/hexo-front-matter.svg?branch=master)](https://travis-ci.org/hexojs/hexo-front-matter)  [![NPM version](https://badge.fury.io/js/hexo-front-matter.svg)](http://badge.fury.io/js/hexo-front-matter) [![Coverage Status](https://coveralls.io/repos/hexojs/hexo-front-matter/badge.svg?branch=master)](https://coveralls.io/r/hexojs/hexo-front-matter?branch=master)
 
 Front-matter parser.
 
@@ -10,7 +10,7 @@ Front-matter allows you to specify data at the top of a file. Here're two format
 
 **YAML front-matter**
 
-``` 
+```
 ---
 layout: false
 title: "Hello world"
