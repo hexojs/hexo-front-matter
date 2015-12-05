@@ -1,13 +1,13 @@
 'use strict';
 
-var should = require('chai').should();
+var should = require('chai').should(); // eslint-disable-line
 var moment = require('moment');
 
-describe('Front-matter', function(){
+describe('Front-matter', function() {
   var yfm = require('..');
 
-  describe('split', function(){
-    it('yaml mode', function(){
+  describe('split', function() {
+    it('yaml mode', function() {
       var str = [
         '---',
         'foo',
@@ -23,7 +23,7 @@ describe('Front-matter', function(){
       });
     });
 
-    it('json mode', function(){
+    it('json mode', function() {
       var str = [
         ';;;',
         'foo',
@@ -39,7 +39,7 @@ describe('Front-matter', function(){
       });
     });
 
-    it('yaml mode: new', function(){
+    it('yaml mode: new', function() {
       var str = [
         'foo',
         '---',
@@ -54,7 +54,7 @@ describe('Front-matter', function(){
       });
     });
 
-    it('json mode: new', function(){
+    it('json mode: new', function() {
       var str = [
         'foo',
         ';;;',
@@ -69,7 +69,7 @@ describe('Front-matter', function(){
       });
     });
 
-    it('without data', function(){
+    it('without data', function() {
       var str = [
         'foo',
         'bar'
@@ -80,7 +80,7 @@ describe('Front-matter', function(){
       });
     });
 
-    it('unbalanced separator', function(){
+    it('unbalanced separator', function() {
       var str = [
         '------',
         'foo',
@@ -93,7 +93,7 @@ describe('Front-matter', function(){
       });
     });
 
-    it('long separator', function(){
+    it('long separator', function() {
       var str = [
         '------',
         'foo',
@@ -109,7 +109,7 @@ describe('Front-matter', function(){
       });
     });
 
-    it('long separator: new', function(){
+    it('long separator: new', function() {
       var str = [
         'foo',
         '------',
@@ -124,7 +124,7 @@ describe('Front-matter', function(){
       });
     });
 
-    it('extra separator', function(){
+    it('extra separator', function() {
       var str = [
         'foo',
         '---',
@@ -141,7 +141,7 @@ describe('Front-matter', function(){
       });
     });
 
-    it('inline separator', function(){
+    it('inline separator', function() {
       var str = [
         '---foo',
         '---',
@@ -153,7 +153,7 @@ describe('Front-matter', function(){
       });
     });
 
-    it('inline separator: new', function(){
+    it('inline separator: new', function() {
       var str = [
         '---bar'
       ].join('\n');
@@ -164,8 +164,8 @@ describe('Front-matter', function(){
     });
   });
 
-  describe('escape', function(){
-    it('escape', function(){
+  describe('escape', function() {
+    it('escape', function() {
       yfm.escape([
         'foo',
         '\tbar',
@@ -178,8 +178,8 @@ describe('Front-matter', function(){
     });
   });
 
-  describe('parse', function(){
-    it('only content', function(){
+  describe('parse', function() {
+    it('only content', function() {
       var str = [
         'foo',
         'bar'
@@ -190,7 +190,7 @@ describe('Front-matter', function(){
       });
     });
 
-    it('yaml', function(){
+    it('yaml', function() {
       var str = [
         'layout: post',
         '---',
@@ -203,7 +203,7 @@ describe('Front-matter', function(){
       });
     });
 
-    it('json', function(){
+    it('json', function() {
       var str = [
         '"layout": false,',
         '"my_list": [',
@@ -221,7 +221,7 @@ describe('Front-matter', function(){
       });
     });
 
-    it('invalid yaml', function(){
+    it('invalid yaml', function() {
       var str = [
         'layout',
         '---',
@@ -233,7 +233,7 @@ describe('Front-matter', function(){
       });
     });
 
-    it('invalid json', function(){
+    it('invalid json', function() {
       var str = [
         'layout',
         ';;;',
@@ -246,7 +246,7 @@ describe('Front-matter', function(){
     });
 
     // Date parsing bug (issue #1)
-    it('date', function(){
+    it('date', function() {
       var now = moment();
 
       var str = [
@@ -255,12 +255,12 @@ describe('Front-matter', function(){
       ].join('\n');
 
       var data = yfm.parse(str);
-      parseInt(data.date.getTime() / 1000).should.eql(parseInt(now.valueOf() / 1000));
+      parseInt(data.date.getTime() / 1000, 10).should.eql(parseInt(now.valueOf() / 1000, 10));
     });
   });
 
-  describe('stringify', function(){
-    it('yaml', function(){
+  describe('stringify', function() {
+    it('yaml', function() {
       var now = new Date();
 
       var data = {
@@ -279,7 +279,7 @@ describe('Front-matter', function(){
       ].join('\n'));
     });
 
-    it('json', function(){
+    it('json', function() {
       var now = new Date();
 
       var data = {
@@ -303,7 +303,7 @@ describe('Front-matter', function(){
       ].join('\n'));
     });
 
-    it('separator', function(){
+    it('separator', function() {
       var data = {
         layout: 'post',
         _content: 'hello'
@@ -316,7 +316,7 @@ describe('Front-matter', function(){
       ].join('\n'));
     });
 
-    it('prefixSeparator', function(){
+    it('prefixSeparator', function() {
       var data = {
         layout: 'post',
         _content: 'hello'
@@ -330,7 +330,7 @@ describe('Front-matter', function(){
       ].join('\n'));
     });
 
-    it('prefixSeparator + custom separator', function(){
+    it('prefixSeparator + custom separator', function() {
       var data = {
         layout: 'post',
         _content: 'hello'
@@ -344,7 +344,7 @@ describe('Front-matter', function(){
       ].join('\n'));
     });
 
-    it('without data', function(){
+    it('without data', function() {
       var data = {
         _content: 'foo'
       };
