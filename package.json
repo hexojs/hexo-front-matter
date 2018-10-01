@@ -5,7 +5,6 @@
   "main": "lib/front_matter",
   "scripts": {
     "eslint": "eslint .",
-    "jscs": "jscs .",
     "test": "mocha test/index.js",
     "test-cov": "istanbul cover --print both _mocha -- test/index.js"
   },
@@ -27,13 +26,11 @@
     "js-yaml": "^3.6.1"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
-    "eslint": "^2.12.0",
-    "eslint-config-hexo": "^1.0.3",
-    "istanbul": "^0.4.3",
-    "jscs": "^3.0.4",
-    "jscs-preset-hexo": "^1.0.1",
-    "mocha": "^2.5.3",
-    "moment": "^2.13.0"
+    "chai": "^4.2.0",
+    "eslint": "^5.6.1",
+    "eslint-config-hexo": "^3.0.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^5.2.0",
+    "moment": "^2.22.2"
   }
 }
