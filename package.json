@@ -35,5 +35,8 @@
     "jscs-preset-hexo": "^1.0.1",
     "mocha": "^2.5.3",
     "moment": "^2.13.0"
+  },
+  "engines": {
+    "node": ">=6.9.0"
   }
 }
