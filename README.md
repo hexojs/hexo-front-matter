@@ -6,7 +6,7 @@ Front-matter parser.
 
 ## What is Front-matter?
 
-Front-matter allows you to specify data at the top of a file. Here're two formats:
+Front-matter allows you to specify data at the top of a file. Here are two formats:
 
 **YAML front-matter**
 
