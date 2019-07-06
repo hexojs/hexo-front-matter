@@ -11,6 +11,9 @@
   "directories": {
     "lib": "./lib"
   },
+  "files": [
+    "lib/"
+  ],
   "repository": "hexojs/hexo-front-matter",
   "keywords": [
     "front-matter",
@@ -34,6 +37,6 @@
     "nyc": "^14.1.1"
   },
   "engines": {
-    "node": ">=6.9.0"
+    "node": ">=8.6.0"
   }
 }
