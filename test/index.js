@@ -23,6 +23,39 @@ describe('Front-matter', () => {
       });
     });
 
+    it('yaml mode - no content', () => {
+      const str = [
+        '---',
+        'foo',
+        '---'
+      ].join('\n');
+
+      yfm.split(str).should.eql({
+        data: 'foo',
+        content: '',
+        separator: '---',
+        prefixSeparator: true
+      });
+    });
+
+    it('yaml mode - content conflict', () => {
+      const str = [
+        '---',
+        'foo',
+        '---',
+        'bar',
+        '---',
+        'baz'
+      ].join('\n');
+
+      yfm.split(str).should.eql({
+        data: 'foo',
+        content: 'bar\n---\nbaz',
+        separator: '---',
+        prefixSeparator: true
+      });
+    });
+
     it('json mode', () => {
       const str = [
         ';;;',
@@ -34,6 +67,21 @@ describe('Front-matter', () => {
       yfm.split(str).should.eql({
         data: 'foo',
         content: 'bar',
+        separator: ';;;',
+        prefixSeparator: true
+      });
+    });
+
+    it('json mode - no content', () => {
+      const str = [
+        ';;;',
+        'foo',
+        ';;;'
+      ].join('\n');
+
+      yfm.split(str).should.eql({
+        data: 'foo',
+        content: '',
         separator: ';;;',
         prefixSeparator: true
       });
@@ -54,6 +102,37 @@ describe('Front-matter', () => {
       });
     });
 
+    it('yaml mode: new - no content', () => {
+      const str = [
+        'foo',
+        '---'
+      ].join('\n');
+
+      yfm.split(str).should.eql({
+        data: 'foo',
+        content: '',
+        separator: '---',
+        prefixSeparator: false
+      });
+    });
+
+    it('yaml mode: new - content conflict', () => {
+      const str = [
+        'foo',
+        '---',
+        'bar',
+        '---',
+        'baz'
+      ].join('\n');
+
+      yfm.split(str).should.eql({
+        data: 'foo',
+        content: 'bar\n---\nbaz',
+        separator: '---',
+        prefixSeparator: false
+      });
+    });
+
     it('json mode: new', () => {
       const str = [
         'foo',
@@ -64,6 +143,20 @@ describe('Front-matter', () => {
       yfm.split(str).should.eql({
         data: 'foo',
         content: 'bar',
+        separator: ';;;',
+        prefixSeparator: false
+      });
+    });
+
+    it('json mode: new - no content', () => {
+      const str = [
+        'foo',
+        ';;;'
+      ].join('\n');
+
+      yfm.split(str).should.eql({
+        data: 'foo',
+        content: '',
         separator: ';;;',
         prefixSeparator: false
       });
