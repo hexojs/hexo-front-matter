@@ -1,6 +1,6 @@
 # hexo-front-matter
 
-[![Build Status](https://travis-ci.org/hexojs/hexo-front-matter.svg?branch=master)](https://travis-ci.org/hexojs/hexo-front-matter)
+[![Build Status](https://github.com/hexojs/hexo-front-matter/workflows/Tester/badge.svg)](https://github.com/hexojs/hexo-front-matter/actions?query=workflow%3ATester)
 [![NPM version](https://badge.fury.io/js/hexo-front-matter.svg)](https://www.npmjs.com/package/hexo-front-matter)
 [![Coverage Status](https://coveralls.io/repos/hexojs/hexo-front-matter/badge.svg?branch=master)](https://coveralls.io/r/hexojs/hexo-front-matter?branch=master)
 
