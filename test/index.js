@@ -352,7 +352,7 @@ describe('Front-matter', () => {
             minute: '2-digit',
             second: '2-digit'
           }
-        ).replaceAll('/', '-');
+        ).replace(/\//g, '-');
 
       const str = [
         `date: ${stringifyDateTime}`,
@@ -377,7 +377,7 @@ describe('Front-matter', () => {
             minute: '2-digit',
             second: '2-digit'
           }
-        ).replaceAll('/', '-');
+        ).replace(/\//g, '-');
 
       const data = {
         layout: 'post',
