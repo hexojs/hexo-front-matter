@@ -340,10 +340,9 @@ describe('Front-matter', () => {
     // Date parsing bug (issue #1)
     it('date', () => {
       const unixTime = Date.now();
-
       const stringifyDateTime = new Date(unixTime)
         .toLocaleString(
-          undefined, {
+          'en-CA', {
             year: 'numeric',
             month: '2-digit',
             day: '2-digit',
@@ -352,7 +351,7 @@ describe('Front-matter', () => {
             minute: '2-digit',
             second: '2-digit'
           }
-        ).replace(/\//g, '-');
+        ).replace(/,/g, '');
 
       const str = [
         `date: ${stringifyDateTime}`,
@@ -368,7 +367,7 @@ describe('Front-matter', () => {
     it('yaml', () => {
       const now = new Date()
         .toLocaleString(
-          undefined, {
+          'en-CA', {
             year: 'numeric',
             month: '2-digit',
             day: '2-digit',
@@ -377,7 +376,7 @@ describe('Front-matter', () => {
             minute: '2-digit',
             second: '2-digit'
           }
-        ).replace(/\//g, '-');
+        ).replace(/,/g, '');
 
       const data = {
         layout: 'post',
