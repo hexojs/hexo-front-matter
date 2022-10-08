@@ -1,7 +1,6 @@
 'use strict';
 
 const should = require('chai').should(); // eslint-disable-line
-const moment = require('moment');
 
 describe('Front-matter', () => {
   const yfm = require('..');
@@ -340,21 +339,45 @@ describe('Front-matter', () => {
 
     // Date parsing bug (issue #1)
     it('date', () => {
-      const now = moment();
+      const unixTime = Date.now();
+
+      const stringifyDateTime = new Date(unixTime)
+        .toLocaleString(
+          undefined, {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            hour12: false,
+            minute: '2-digit',
+            second: '2-digit'
+          }
+        ).replaceAll('/', '-');
 
       const str = [
-        `date: ${now.format('YYYY-MM-DD HH:mm:ss')}`,
+        `date: ${stringifyDateTime}`,
         '---'
       ].join('\n');
 
       const data = yfm.parse(str);
-      parseInt(data.date.getTime() / 1000, 10).should.eql(parseInt(now.valueOf() / 1000, 10));
+      parseInt(data.date.getTime() / 1000, 10).should.eql(parseInt(unixTime / 1000, 10));
     });
   });
 
   describe('stringify', () => {
     it('yaml', () => {
-      const now = new Date();
+      const now = new Date()
+        .toLocaleString(
+          undefined, {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            hour12: false,
+            minute: '2-digit',
+            second: '2-digit'
+          }
+        ).replaceAll('/', '-');
 
       const data = {
         layout: 'post',
@@ -365,7 +388,7 @@ describe('Front-matter', () => {
 
       yfm.stringify(data).should.eql([
         'layout: post',
-        `created: ${moment(now).format('YYYY-MM-DD HH:mm:ss')}`,
+        `created: '${now}'`,
         'blank:',
         '---',
         '123'
