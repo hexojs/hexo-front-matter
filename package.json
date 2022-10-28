@@ -16,8 +16,9 @@
     "lib": "./lib"
   },
   "files": [
-    "lib/"
+    "dist/**"
   ],
+  "types": "./dist/front_matter.d.ts",
   "repository": "hexojs/hexo-front-matter",
   "keywords": [
     "front-matter",
