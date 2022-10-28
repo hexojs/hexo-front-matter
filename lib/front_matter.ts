@@ -1,6 +1,4 @@
-'use strict';
-
-const yaml = require('js-yaml');
+import yaml from 'js-yaml';
 const rPrefixSep = /^(-{3,}|;{3,})/;
 const rFrontMatter = /^(-{3,}|;{3,})\n([\s\S]+?)\n\1\n?([\s\S]*)/;
 const rFrontMatterNew = /^([\s\S]+?)\n(-{3,}|;{3,})\n?([\s\S]*)/;
@@ -94,7 +92,13 @@ function escapeYAML(str) {
   });
 }
 
-function stringify(obj, options = {}) {
+interface Options {
+  mode?: 'json' | '',
+  prefixSeparator?: boolean,
+  separator?: string
+}
+
+function stringify(obj, options: Options = {}) {
   if (!obj) throw new TypeError('obj is required!');
 
   const { _content: content = '' } = obj;
@@ -173,9 +177,9 @@ function formatDate(date) {
   return `${date.getFullYear()}-${doubleDigit(date.getMonth() + 1)}-${doubleDigit(date.getDate())} ${doubleDigit(date.getHours())}:${doubleDigit(date.getMinutes())}:${doubleDigit(date.getSeconds())}`;
 }
 
-module.exports = {
+export {
   parse,
   split,
-  escape: escapeYAML,
+  escapeYAML as escape,
   stringify
 };
