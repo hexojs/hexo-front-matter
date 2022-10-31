@@ -3,7 +3,7 @@ const rPrefixSep = /^(-{3,}|;{3,})/;
 const rFrontMatter = /^(-{3,}|;{3,})\n([\s\S]+?)\n\1\n?([\s\S]*)/;
 const rFrontMatterNew = /^([\s\S]+?)\n(-{3,}|;{3,})\n?([\s\S]*)/;
 
-function split(str) {
+function split(str: string) {
   if (typeof str !== 'string') throw new TypeError('str is required!');
 
   const matchOld = str.match(rFrontMatter);
@@ -32,7 +32,7 @@ function split(str) {
   return { content: str };
 }
 
-function parse(str, options) {
+function parse(str: string, options: yaml.LoadOptions) {
   if (typeof str !== 'string') throw new TypeError('str is required!');
 
   const splitData = split(str);
@@ -63,7 +63,7 @@ function parse(str, options) {
   return data;
 }
 
-function parseYAML(str, options) {
+function parseYAML(str, options: yaml.LoadOptions) {
   const result = yaml.load(escapeYAML(str), options);
   if (typeof result !== 'object') return;
 
@@ -78,7 +78,7 @@ function parseJSON(str) {
   }
 }
 
-function escapeYAML(str) {
+function escapeYAML(str: string) {
   if (typeof str !== 'string') throw new TypeError('str is required!');
 
   return str.replace(/\n(\t+)/g, (match, tabs) => {
