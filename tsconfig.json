@@ -5,10 +5,7 @@
     "sourceMap": true,
     "outDir": "dist",
     "declaration": true,
-    "esModuleInterop": true,
-    "types": [
-      "node"
-    ]
+    "esModuleInterop": true
   },
   "include": [
     "lib/front_matter.ts"
