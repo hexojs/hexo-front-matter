@@ -32,7 +32,7 @@ function split(str: string) {
   return { content: str };
 }
 
-function parse(str: string, options: yaml.LoadOptions) {
+function parse(str: string, options?: yaml.LoadOptions) {
   if (typeof str !== 'string') throw new TypeError('str is required!');
 
   const splitData = split(str);
