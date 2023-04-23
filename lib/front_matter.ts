@@ -32,6 +32,15 @@ function split(str: string) {
   return { content: str };
 }
 
+export type ParseResult = Record<string, any> & Partial<{
+  _content: string;
+  title: string;
+  description: string;
+  thumbnail: string;
+  date: any;
+  updated: any;
+}>
+
 function parse(str: string, options: yaml.LoadOptions = {}) {
   if (typeof str !== 'string') throw new TypeError('str is required!');
 
@@ -40,15 +49,7 @@ function parse(str: string, options: yaml.LoadOptions = {}) {
 
   if (!raw) return { _content: str };
 
-  let data: Partial<{
-		[key: string]: any;
-		_content: string;
-		title: string;
-		description: string;
-		thumbnail: string;
-		date: any;
-		updated: any;
-	}>;
+  let data: ParseResult;
 
   if (splitData.separator.startsWith(';')) {
     data = parseJSON(raw);
