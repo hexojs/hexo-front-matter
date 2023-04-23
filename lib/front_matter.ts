@@ -39,6 +39,7 @@ export type ParseResult = Record<string, any> & Partial<{
   thumbnail: string;
   date: any;
   updated: any;
+  permalink: string;
 }>
 
 function parse(str: string, options: yaml.LoadOptions = {}) {
