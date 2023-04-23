@@ -40,12 +40,20 @@ function parse(str: string, options: yaml.LoadOptions = {}) {
 
   if (!raw) return { _content: str };
 
-  let data;
+  let data: Partial<{
+		[key: string]: any;
+		_content: string;
+		title: string;
+		description: string;
+		thumbnail: string;
+		date: any;
+		updated: any;
+	}>;
 
   if (splitData.separator.startsWith(';')) {
     data = parseJSON(raw);
   } else {
-    data = parseYAML(raw, options);
+    data = <any>parseYAML(raw, options);
   }
 
   if (!data) return { _content: str };
@@ -55,7 +63,9 @@ function parse(str: string, options: yaml.LoadOptions = {}) {
     const item = data[key];
 
     if (item instanceof Date) {
-      data[key] = new Date(item.getTime() + (item.getTimezoneOffset() * 60 * 1000));
+      data[key] = new Date(
+        item.getTime() + (item.getTimezoneOffset() * 60 * 1000)
+      );
     }
   });
 
@@ -63,18 +73,18 @@ function parse(str: string, options: yaml.LoadOptions = {}) {
   return data;
 }
 
-function parseYAML(str, options: yaml.LoadOptions) {
+function parseYAML(str: string, options: yaml.LoadOptions) {
   const result = yaml.load(escapeYAML(str), options);
   if (typeof result !== 'object') return;
 
   return result;
 }
 
-function parseJSON(str) {
+function parseJSON(str: string) {
   try {
     return JSON.parse(`{${str}}`);
   } catch (err) {
-    return; // eslint-disable-line
+		return; // eslint-disable-line
   }
 }
 
@@ -93,12 +103,12 @@ function escapeYAML(str: string) {
 }
 
 interface Options {
-  mode?: 'json' | '',
-  prefixSeparator?: boolean,
-  separator?: string
+	mode?: 'json' | '';
+	prefixSeparator?: boolean;
+	separator?: string;
 }
 
-function stringify(obj, options: Options = {}) {
+function stringify(obj: Record<string, any>, options: Options = {}) {
   if (!obj) throw new TypeError('obj is required!');
 
   const { _content: content = '' } = obj;
@@ -123,12 +133,14 @@ function stringify(obj, options: Options = {}) {
   return result;
 }
 
-function stringifyYAML(obj, options) {
+type YamlMergedOpts = Options & yaml.DumpOptions;
+
+function stringifyYAML(obj: Record<string, any>, options: YamlMergedOpts) {
   const keys = Object.keys(obj);
   const data = {};
   const nullKeys = [];
   const dateKeys = [];
-  let key, value, i, len;
+  let key: string, value: any, i: number, len: number;
 
   for (i = 0, len = keys.length; i < len; i++) {
     key = keys[i];
@@ -162,24 +174,25 @@ function stringifyYAML(obj, options) {
 }
 
 function stringifyJSON(obj) {
-  return JSON.stringify(obj, null, '  ')
+  return (
+    JSON.stringify(obj, null, '  ')
     // Remove indention
-    .replace(/\n {2}/g, () => '\n')
+      .replace(/\n {2}/g, () => '\n')
     // Remove prefixing and trailing braces
-    .replace(/^{\n|}$/g, '');
+      .replace(/^{\n|}$/g, '')
+  );
 }
 
-function doubleDigit(num) {
+function doubleDigit(num: number) {
   return num.toString().padStart(2, '0');
 }
 
-function formatDate(date) {
-  return `${date.getFullYear()}-${doubleDigit(date.getMonth() + 1)}-${doubleDigit(date.getDate())} ${doubleDigit(date.getHours())}:${doubleDigit(date.getMinutes())}:${doubleDigit(date.getSeconds())}`;
+function formatDate(date: Date) {
+  return `${date.getFullYear()}-${doubleDigit(
+    date.getMonth() + 1
+  )}-${doubleDigit(date.getDate())} ${doubleDigit(
+    date.getHours()
+  )}:${doubleDigit(date.getMinutes())}:${doubleDigit(date.getSeconds())}`;
 }
 
-export {
-  parse,
-  split,
-  escapeYAML as escape,
-  stringify
-};
+export { parse, split, escapeYAML as escape, stringify };
