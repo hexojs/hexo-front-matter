@@ -2,7 +2,8 @@
   "name": "hexo-front-matter",
   "version": "4.1.0",
   "description": "Front-matter parser.",
-  "main": "dist/front_matter",
+  "main": "dist/front_matter.js",
+  "types": "./dist/front_matter.d.ts",
   "scripts": {
     "prepublish ": "npm run clean && npm run build",
     "build": "tsc -b",
@@ -13,9 +14,8 @@
     "test-cov": "c8 --reporter=lcovonly npm run test"
   },
   "files": [
-    "dist/**"
+    "dist"
   ],
-  "types": "./dist/front_matter.d.ts",
   "repository": "hexojs/hexo-front-matter",
   "keywords": [
     "front-matter",
