@@ -5,7 +5,9 @@
     "sourceMap": true,
     "outDir": "dist",
     "declaration": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true
   },
   "include": [
     "lib/front_matter.ts"
