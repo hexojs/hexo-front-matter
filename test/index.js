@@ -339,19 +339,11 @@ describe('Front-matter', () => {
 
     // Date parsing bug (issue #1)
     it('date', () => {
-      const unixTime = Date.now();
-      const stringifyDateTime = new Date(unixTime)
-        .toLocaleString(
-          'en-CA', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            hour12: false,
-            minute: '2-digit',
-            second: '2-digit'
-          }
-        ).replace(/,/g, '');
+      const current = new Date();
+      const unixTime = current.getTime();
+      // js-yaml only accept ISO 8601 format date string as valid date type.
+      // Date.prototype.toJSON method automatically applied offset, so we need to revert that.
+      const stringifyDateTime = new Date(current.getTime() - (current.getTimezoneOffset() * 60 * 1000)).toJSON();
 
       const str = [
         `date: ${stringifyDateTime}`,
@@ -365,18 +357,7 @@ describe('Front-matter', () => {
 
   describe('stringify', () => {
     it('yaml', () => {
-      const now = new Date()
-        .toLocaleString(
-          'en-CA', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            hour12: false,
-            minute: '2-digit',
-            second: '2-digit'
-          }
-        ).replace(/,/g, '');
+      const now = new Date().toJSON();
 
       const data = {
         layout: 'post',
