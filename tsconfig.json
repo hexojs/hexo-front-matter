@@ -1,18 +1,14 @@
 {
-  "compilerOptions": {
-    "module": "commonjs",
-    "target": "es6",
-    "sourceMap": true,
-    "outDir": "dist",
-    "declaration": true,
-    "esModuleInterop": true,
-    "skipDefaultLibCheck": true,
-    "skipLibCheck": true
-  },
-  "include": [
-    "lib/front_matter.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+	"compilerOptions": {
+		"module": "CommonJS",
+		"target": "ES6",
+		"sourceMap": true,
+		"outDir": "dist",
+		"declaration": true,
+		"esModuleInterop": true,
+		"skipDefaultLibCheck": true,
+		"skipLibCheck": true
+	},
+	"include": ["lib/front_matter.ts"],
+	"exclude": ["node_modules", "dist"]
 }
