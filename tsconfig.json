@@ -6,9 +6,8 @@
     "outDir": "dist",
     "declaration": true,
     "esModuleInterop": true,
-    "types": [
-      "node"
-    ]
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true
   },
   "include": [
     "lib/front_matter.ts"
