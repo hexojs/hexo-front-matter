@@ -6,3 +6,4 @@ tmp/
 coverage
 dist
 package-lock.json
+.vscode
