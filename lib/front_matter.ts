@@ -55,7 +55,7 @@ function parse(str: string, options: yaml.LoadOptions = {}) {
   if (splitData.separator.startsWith(';')) {
     data = parseJSON(raw);
   } else {
-    data = <any>parseYAML(raw, options);
+    data = parseYAML(raw, options) as any;
   }
 
   if (!data) return { _content: str };
