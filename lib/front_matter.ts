@@ -111,7 +111,7 @@ interface Options {
 	separator?: string;
 }
 
-function stringify(obj: Record<string, any>, options: Options = {}) {
+function stringify(obj: Record<string, any>, options: Options = {}): string {
   if (!obj) throw new TypeError('obj is required!');
 
   const { _content: content = '' } = obj;
