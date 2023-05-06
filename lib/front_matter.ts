@@ -32,15 +32,16 @@ function split(str: string) {
   return { content: str };
 }
 
-export type ParseResult = Record<string, any> & Partial<{
-  _content: string;
-  title: string;
-  description: string;
-  thumbnail: string;
-  date: any;
-  updated: any;
-  permalink: string;
-}>
+export type ParseResult = Record<string, any> &
+	Partial<{
+		_content: string;
+		title: string;
+		description: string;
+		thumbnail: string;
+		date: any;
+		updated: any;
+		permalink: string;
+	}>;
 
 function parse(str: string, options: yaml.LoadOptions = {}) {
   if (typeof str !== 'string') throw new TypeError('str is required!');
