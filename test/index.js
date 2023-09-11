@@ -6,6 +6,14 @@ describe('Front-matter', () => {
   const yfm = require('..');
 
   describe('split', () => {
+    it('not string', () => {
+      (() => {
+        const str = [];
+
+        yfm.split(str).should.throw(TypeError, 'str is required!');
+      }).should.throw();
+    });
+
     it('yaml mode', () => {
       const str = [
         '---',
@@ -257,6 +265,12 @@ describe('Front-matter', () => {
   });
 
   describe('escape', () => {
+    it('not string', () => {
+      (() => {
+        yfm.escape([]).should.throw(TypeError, 'str is required!');
+      }).should.throw();
+    });
+
     it('escape', () => {
       yfm.escape([
         'foo',
@@ -271,6 +285,14 @@ describe('Front-matter', () => {
   });
 
   describe('parse', () => {
+    it('not string', () => {
+      (() => {
+        const str = [];
+
+        yfm.parse(str).should.throw(TypeError, 'str is required!');
+      }).should.throw();
+    });
+
     it('only content', () => {
       const str = [
         'foo',
@@ -356,6 +378,12 @@ describe('Front-matter', () => {
   });
 
   describe('stringify', () => {
+    it('not string', () => {
+      (() => {
+        yfm.stringify(null).should.throw(TypeError, 'obj is required!');
+      }).should.throw();
+    });
+
     it('yaml', () => {
       const now = new Date().toJSON();
 
@@ -386,7 +414,7 @@ describe('Front-matter', () => {
         _content: '123'
       };
 
-      yfm.stringify(data, {mode: 'json'}).should.eql([
+      yfm.stringify(data, { mode: 'json' }).should.eql([
         '"layout": "post",',
         `"created": "${now.toISOString()}",`,
         '"blank": null,',
@@ -405,7 +433,7 @@ describe('Front-matter', () => {
         _content: 'hello'
       };
 
-      yfm.stringify(data, {separator: '------'}).should.eql([
+      yfm.stringify(data, { separator: '------' }).should.eql([
         'layout: post',
         '------',
         'hello'
@@ -418,7 +446,7 @@ describe('Front-matter', () => {
         _content: 'hello'
       };
 
-      yfm.stringify(data, {prefixSeparator: true}).should.eql([
+      yfm.stringify(data, { prefixSeparator: true }).should.eql([
         '---',
         'layout: post',
         '---',
@@ -432,7 +460,7 @@ describe('Front-matter', () => {
         _content: 'hello'
       };
 
-      yfm.stringify(data, {separator: '------', prefixSeparator: true}).should.eql([
+      yfm.stringify(data, { separator: '------', prefixSeparator: true }).should.eql([
         '------',
         'layout: post',
         '------',
@@ -447,5 +475,24 @@ describe('Front-matter', () => {
 
       yfm.stringify(data).should.eql('foo');
     });
+
+    it('with raw date', () => {
+      const now = new Date('1995-12-17T03:24:00');
+
+      const data = {
+        layout: 'post',
+        created: now,
+        blank: null,
+        _content: '123'
+      };
+
+      yfm.stringify(data).should.eql([
+        'layout: post',
+        `created: 1995-12-17 03:24:00`,
+        'blank:',
+        '---',
+        '123'
+      ].join('\n'));
+    })
   });
 });
