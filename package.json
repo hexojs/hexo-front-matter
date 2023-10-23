@@ -2,7 +2,8 @@
   "name": "hexo-front-matter",
   "version": "4.1.0",
   "description": "Front-matter parser.",
-  "main": "dist/front_matter",
+  "main": "dist/front_matter.js",
+  "types": "./dist/front_matter.d.ts",
   "scripts": {
     "prepublish ": "npm run clean && npm run build",
     "build": "tsc -b",
@@ -13,9 +14,8 @@
     "test-cov": "c8 --reporter=lcovonly npm run test"
   },
   "files": [
-    "dist/**"
+    "dist"
   ],
-  "types": "./dist/front_matter.d.ts",
   "repository": "hexojs/hexo-front-matter",
   "keywords": [
     "front-matter",
@@ -31,8 +31,9 @@
     "js-yaml": "^4.1.0"
   },
   "devDependencies": {
+    "@types/chai": "^4.3.5",
     "@types/js-yaml": "^4.0.5",
-    "@types/node": "^18.11.7",
+    "@types/node": "^18.16.3",
     "@typescript-eslint/eslint-plugin": "^5.41.0",
     "@typescript-eslint/parser": "^5.41.0",
     "c8": "^8.0.0",
