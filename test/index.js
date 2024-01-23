@@ -3,7 +3,7 @@
 const should = require('chai').should(); // eslint-disable-line
 
 describe('Front-matter', () => {
-  const yfm = require('..');
+  const yfm = require('../lib/front_matter.ts');
 
   describe('split', () => {
     it('not string', () => {
@@ -488,11 +488,11 @@ describe('Front-matter', () => {
 
       yfm.stringify(data).should.eql([
         'layout: post',
-        `created: 1995-12-17 03:24:00`,
+        'created: 1995-12-17 03:24:00',
         'blank:',
         '---',
         '123'
       ].join('\n'));
-    })
+    });
   });
 });
