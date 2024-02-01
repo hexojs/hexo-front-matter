@@ -1,9 +1,7 @@
-'use strict';
 
-const should = require('chai').should(); // eslint-disable-line
+const yfm = require('../lib/front_matter.ts');
 
 describe('Front-matter', () => {
-  const yfm = require('../lib/front_matter.ts');
 
   describe('split', () => {
     it('not string', () => {
@@ -373,7 +371,7 @@ describe('Front-matter', () => {
       ].join('\n');
 
       const data = yfm.parse(str);
-      parseInt(data.date.getTime() / 1000, 10).should.eql(parseInt(unixTime / 1000, 10));
+      parseInt(String(data.date.getTime() / 1000), 10).should.eql(parseInt(String(unixTime / 1000), 10));
     });
   });
 

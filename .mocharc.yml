@@ -1,0 +1,9 @@
+reporter: spec
+loader:
+  # - ts-node/esm
+require:
+  - ts-node/register
+  - chai/register-should.js
+
+spec: ["test/*.ts"]
+watch-files: ["lib"]
