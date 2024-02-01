@@ -1,7 +1,7 @@
 import yaml from 'js-yaml';
 const rPrefixSep = /^(-{3,}|;{3,})/;
-const rFrontMatter = /^(-{3,}|;{3,})\n([\s\S]+?)\n\1\n?([\s\S]*)/;
-const rFrontMatterNew = /^([\s\S]+?)\n(-{3,}|;{3,})\n?([\s\S]*)/;
+const rFrontMatter = /^(-{3,}|;{3,})\r?\n([\s\S]+?)\r?\n\1\r?\n?([\s\S]*)/;
+const rFrontMatterNew = /^([\s\S]+?)\r?\n(-{3,}|;{3,})\r?\n?([\s\S]*)/;
 
 function split(str: string) {
   if (typeof str !== 'string') throw new TypeError('str is required!');
@@ -81,7 +81,7 @@ function parseJSON(str) {
 function escapeYAML(str: string) {
   if (typeof str !== 'string') throw new TypeError('str is required!');
 
-  return str.replace(/\n(\t+)/g, (match, tabs) => {
+  return str.replace(/\r?\n(\t+)/g, (match, tabs) => {
     let result = '\n';
 
     for (let i = 0, len = tabs.length; i < len; i++) {
@@ -164,9 +164,9 @@ function stringifyYAML(obj, options) {
 function stringifyJSON(obj) {
   return JSON.stringify(obj, null, '  ')
     // Remove indention
-    .replace(/\n {2}/g, () => '\n')
+    .replace(/\r?\n {2}/g, () => '\n')
     // Remove prefixing and trailing braces
-    .replace(/^{\n|}$/g, '');
+    .replace(/^{\r?\n|}$/g, '');
 }
 
 function doubleDigit(num) {
