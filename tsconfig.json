@@ -6,9 +6,8 @@
     "outDir": "dist",
     "declaration": true,
     "esModuleInterop": true,
-    "types": [
-      "node"
-    ]
+    "lib": ["ES2020", "ES6"],
+    "moduleResolution": "Node"
   },
   "include": [
     "lib/front_matter.ts"

@@ -5,4 +5,8 @@ tmp/
 .idea/
 coverage
 dist
-package-lock.json
+**/package-lock.json
+**/yarn.lock
+*pnpm-lock.yml
+*pnpm-lock.yaml
+**/.yarn
