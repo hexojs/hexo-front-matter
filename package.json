@@ -2,7 +2,7 @@
   "name": "hexo-front-matter",
   "version": "4.2.1",
   "description": "Front-matter parser.",
-  "main": "dist/front_matter",
+  "main": "dist/front_matter.js",
   "scripts": {
     "prepublish ": "npm run clean && npm run build",
     "build": "tsc -b",
