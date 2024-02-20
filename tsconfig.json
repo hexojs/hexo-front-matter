@@ -6,14 +6,15 @@
     "outDir": "dist",
     "declaration": true,
     "esModuleInterop": true,
-    "types": [
-      "node"
-    ]
+    "types": ["node"]
   },
-  "include": [
-    "lib/front_matter.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["lib/front_matter.ts"],
+  "exclude": ["node_modules"],
+
+  "ts-node": {
+    "transpileOnly": true,
+    "compilerOptions": {
+      "types": ["node", "mocha", "chai"]
+    }
+  }
 }
