@@ -30,7 +30,7 @@
     "js-yaml": "^4.1.0"
   },
   "devDependencies": {
-    "@types/chai": "^4.3.11",
+    "@types/chai": "^5.0.1",
     "@types/js-yaml": "^4.0.5",
     "@types/mocha": "^10.0.6",
     "@types/node": "^18.11.7",
