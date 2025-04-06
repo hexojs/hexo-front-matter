@@ -1,5 +1,4 @@
-
-const yfm = require('../lib/front_matter.ts');
+import * as yfm from '../lib/front_matter.ts';
 
 describe('Front-matter', () => {
 
@@ -370,7 +369,7 @@ describe('Front-matter', () => {
         '---'
       ].join('\n');
 
-      const data = yfm.parse(str);
+      const data = yfm.parse(str, { schema: 'yaml-1.1' });
       parseInt(String(data.date.getTime() / 1000), 10).should.eql(parseInt(String(unixTime / 1000), 10));
     });
   });
@@ -394,7 +393,7 @@ describe('Front-matter', () => {
 
       yfm.stringify(data).should.eql([
         'layout: post',
-        `created: '${now}'`,
+        `created: ${now}`,
         'blank:',
         '---',
         '123'
