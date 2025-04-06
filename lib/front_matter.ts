@@ -1,4 +1,4 @@
-import yaml from 'js-yaml';
+import { parse as ymlParse, stringify as ymlStringify } from 'yaml';
 const rPrefixSep = /^(-{3,}|;{3,})/;
 const rFrontMatter = /^(-{3,}|;{3,})\r?\n([\s\S]+?)\r?\n\1\r?\n?([\s\S]*)/;
 const rFrontMatterNew = /^([\s\S]+?)\r?\n(-{3,}|;{3,})\r?\n?([\s\S]*)/;
@@ -32,7 +32,7 @@ function split(str: string) {
   return { content: str };
 }
 
-function parse(str: string, options?: yaml.LoadOptions) {
+function parse(str: string, options) {
   if (typeof str !== 'string') throw new TypeError('str is required!');
 
   const splitData = split(str);
@@ -63,8 +63,8 @@ function parse(str: string, options?: yaml.LoadOptions) {
   return data;
 }
 
-function parseYAML(str, options: yaml.LoadOptions) {
-  const result = yaml.load(escapeYAML(str), options);
+function parseYAML(str, options) {
+  const result = ymlParse(escapeYAML(str), options);
   if (typeof result !== 'object') return;
 
   return result;
@@ -143,7 +143,7 @@ function stringifyYAML(obj, options) {
     }
   }
 
-  let result = yaml.dump(data, options);
+  let result = ymlStringify(data, options);
 
   if (dateKeys.length) {
     for (i = 0, len = dateKeys.length; i < len; i++) {
