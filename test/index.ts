@@ -400,6 +400,22 @@ describe('Front-matter', () => {
       const dt = DateTime.fromISO(stringifyDateTime, { zone });
       data.date.getTime().should.eql(dt.toMillis());
     });
+
+    it('date - date only', () => {
+      const stringifyDateTime = '2025-01-01';
+      const zone = 'Europe/Paris';
+
+      const str = [
+        `date: ${stringifyDateTime}`,
+        '---'
+      ].join('\n');
+
+      const data = yfm.parse(str, {
+        defaultTimeZone: zone
+      });
+      const dt = DateTime.fromISO(stringifyDateTime, { zone });
+      data.date.getTime().should.eql(dt.toMillis());
+    });
   });
 
   describe('stringify', () => {
