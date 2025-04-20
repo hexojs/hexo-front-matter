@@ -7,12 +7,13 @@ import { DateTime } from 'luxon';
 function parseSexagesimal<B extends boolean>(str: string, asBigInt?: B) {
   const sign = str[0];
   const parts = sign === '-' || sign === '+' ? str.substring(1) : str;
-  const num = (n: number | string) =>
-    (asBigInt ? (BigInt(n) as unknown as number) : Number(n));
+  const num = (n: number | string) => {
+    return asBigInt ? BigInt(n) as unknown as number : Number(n);
+  };
   const res = parts
     .replace(/_/g, '')
     .split(':')
-    .reduce((res, p) => res * num(60) + num(p), num(0));
+    .reduce((res, p) => (res * num(60)) + num(p), num(0));
   return (sign === '-' ? num(-1) * res : res) as B extends true
     ? number | bigint
     : number;
@@ -81,8 +82,10 @@ export function timestampFactory(defaultTimeZone: string) {
       return new Date(date);
     },
 
-    stringify: ({ value }) =>
-      (value as Date)?.toISOString().replace(/(T00:00:00)?\.000Z$/, '') ?? ''
+    stringify: ({ value }) => {
+      // eslint-disable-next-line no-extra-parens
+      return (value as Date)?.toISOString().replace(/(T00:00:00)?\.000Z$/, '') ?? '';
+    }
   };
   return timestamp;
 }
