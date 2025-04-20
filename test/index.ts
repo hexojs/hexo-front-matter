@@ -1,4 +1,5 @@
 import * as yfm from '../lib/front_matter.ts';
+import { DateTime } from 'luxon';
 
 describe('Front-matter', () => {
 
@@ -357,20 +358,47 @@ describe('Front-matter', () => {
     });
 
     // Date parsing bug (issue #1)
-    it('date', () => {
-      const current = new Date();
-      const unixTime = current.getTime();
-      // js-yaml only accept ISO 8601 format date string as valid date type.
-      // Date.prototype.toJSON method automatically applied offset, so we need to revert that.
-      const stringifyDateTime = new Date(current.getTime() - (current.getTimezoneOffset() * 60 * 1000)).toJSON();
+    it('date - specified timezone', () => {
+      const stringifyDateTime = '2025-01-01T12:00:00.000+08:00';
 
       const str = [
         `date: ${stringifyDateTime}`,
         '---'
       ].join('\n');
 
-      const data = yfm.parse(str, { schema: 'yaml-1.1' });
-      parseInt(String(data.date.getTime() / 1000), 10).should.eql(parseInt(String(unixTime / 1000), 10));
+      const data = yfm.parse(str);
+      const dt = DateTime.fromISO(stringifyDateTime);
+      data.date.getTime().should.eql(dt.toMillis());
+    });
+
+    it('date - default timezone from Hexo config', () => {
+      const stringifyDateTime = '2025-01-01T12:00:00.000';
+      const zone = 'Europe/Paris';
+
+      const str = [
+        `date: ${stringifyDateTime}`,
+        '---'
+      ].join('\n');
+
+      const data = yfm.parse(str, {
+        defaultTimeZone: zone
+      });
+      const dt = DateTime.fromISO(stringifyDateTime, { zone });
+      data.date.getTime().should.eql(dt.toMillis());
+    });
+
+    it('date - no timezone, fallback to UTC', () => {
+      const stringifyDateTime = '2025-01-01T12:00:00.000';
+      const zone = 'UTC';
+
+      const str = [
+        `date: ${stringifyDateTime}`,
+        '---'
+      ].join('\n');
+
+      const data = yfm.parse(str);
+      const dt = DateTime.fromISO(stringifyDateTime, { zone });
+      data.date.getTime().should.eql(dt.toMillis());
     });
   });
 

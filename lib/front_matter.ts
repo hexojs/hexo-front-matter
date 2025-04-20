@@ -1,4 +1,5 @@
 import { parse as ymlParse, stringify as ymlStringify } from 'yaml';
+import { timestampFactory } from './timestamp';
 const rPrefixSep = /^(-{3,}|;{3,})/;
 const rFrontMatter = /^(-{3,}|;{3,})\r?\n([\s\S]+?)\r?\n\1\r?\n?([\s\S]*)/;
 const rFrontMatterNew = /^([\s\S]+?)\r?\n(-{3,}|;{3,})\r?\n?([\s\S]*)/;
@@ -50,21 +51,18 @@ function parse(str: string, options) {
 
   if (!data) return { _content: str };
 
-  // Convert timezone
-  Object.keys(data).forEach(key => {
-    const item = data[key];
-
-    if (item instanceof Date) {
-      data[key] = new Date(item.getTime() + (item.getTimezoneOffset() * 60 * 1000));
-    }
-  });
-
   data._content = splitData.content;
   return data;
 }
 
-function parseYAML(str, options) {
-  const result = ymlParse(escapeYAML(str), options);
+interface ParseOptions {
+  defaultTimeZone?: string;
+}
+
+function parseYAML(str, options: ParseOptions = {}) {
+  const result = ymlParse(escapeYAML(str), {
+    customTags: [timestampFactory(options.defaultTimeZone)]
+  });
   if (typeof result !== 'object') return;
 
   return result;
@@ -92,13 +90,13 @@ function escapeYAML(str: string) {
   });
 }
 
-interface Options {
+interface StringifyOptions {
   mode?: 'json' | '',
   prefixSeparator?: boolean,
   separator?: string
 }
 
-function stringify(obj, options: Options = {}) {
+function stringify(obj, options: StringifyOptions = {}) {
   if (!obj) throw new TypeError('obj is required!');
 
   const { _content: content = '' } = obj;
