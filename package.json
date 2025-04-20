@@ -27,10 +27,12 @@
   "author": "Tommy Chen <tommy351@gmail.com> (http://zespia.tw)",
   "license": "MIT",
   "dependencies": {
+    "luxon": "^3.6.1",
     "yaml": "2.7.1"
   },
   "devDependencies": {
     "@types/chai": "^5.0.1",
+    "@types/luxon": "^3.6.2",
     "@types/mocha": "^10.0.6",
     "@types/node": "^22.14.0",
     "c8": "^10.1.2",
