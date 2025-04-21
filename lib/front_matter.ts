@@ -33,7 +33,11 @@ function split(str: string) {
   return { content: str };
 }
 
-function parse(str: string, options) {
+interface ParseOptions {
+  defaultTimeZone?: string;
+}
+
+function parse(str: string, options: ParseOptions = {}) {
   if (typeof str !== 'string') throw new TypeError('str is required!');
 
   const splitData = split(str);
@@ -55,11 +59,7 @@ function parse(str: string, options) {
   return data;
 }
 
-interface ParseOptions {
-  defaultTimeZone?: string;
-}
-
-function parseYAML(str, options: ParseOptions = {}) {
+function parseYAML(str, options: ParseOptions) {
   const result = ymlParse(escapeYAML(str), {
     customTags: [timestampFactory(options.defaultTimeZone)]
   });
@@ -113,7 +113,10 @@ function stringify(obj, options: StringifyOptions = {}) {
   if (mode === 'json') {
     result += stringifyJSON(obj);
   } else {
-    result += stringifyYAML(obj, options);
+    result += stringifyYAML(obj, {
+      defaultStringType: 'PLAIN',
+      singleQuote: true
+    });
   }
 
   result += `${separator}\n${content}`;
