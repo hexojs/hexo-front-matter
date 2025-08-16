@@ -41,7 +41,7 @@ export function timestampFactory(defaultTimeZone: string) {
       const match = str.match(timestamp.test);
       if (!match) { throw new Error('!!timestamp expects a date, starting with yyyy-mm-dd'); }
       const [, year, month, day, hour, minute, second] = match.map(Number);
-      const millisec = match[7] ? Number((match[7] + '00').substr(1, 3)) : 0;
+      const millisec = match[7] ? Number((match[7] + '00').substring(1, 4)) : 0;
 
       let date = Date.UTC(
         year,
