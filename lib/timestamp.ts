@@ -1,4 +1,4 @@
-// https://github.com/eemeli/yaml/blob/main/src/schema/yaml-1.1/timestamp.ts
+// https://github.com/eemeli/yaml/blob/9cf06d2a62c6f591516f74bdbb8b0965e1961ebd/src/schema/yaml-1.1/timestamp.ts
 // License: https://github.com/eemeli/yaml/blob/main/LICENSE
 import type { ScalarTag } from 'yaml';
 import { DateTime } from 'luxon';
