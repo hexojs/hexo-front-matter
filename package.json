@@ -15,7 +15,10 @@
     "dist/**"
   ],
   "types": "./dist/front_matter.d.ts",
-  "repository": "hexojs/hexo-front-matter",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hexojs/hexo-front-matter.git"
+  },
   "keywords": [
     "front-matter",
     "front matter",
