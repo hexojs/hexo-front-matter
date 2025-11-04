@@ -83,7 +83,7 @@ export function timestampFactory(defaultTimeZone: string) {
     },
 
     stringify: ({ value }) => {
-      // eslint-disable-next-line no-extra-parens
+
       return (value as Date)?.toISOString().replace(/(T00:00:00)?\.000Z$/, '') ?? '';
     }
   };

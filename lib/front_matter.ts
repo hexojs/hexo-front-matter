@@ -71,7 +71,7 @@ function parseYAML(str, options: ParseOptions) {
 function parseJSON(str) {
   try {
     return JSON.parse(`{${str}}`);
-  } catch (err) {
+  } catch {
     return; // eslint-disable-line
   }
 }
