@@ -38,6 +38,10 @@ Prefixing separators are optional.
 
 Parses front-matter.
 
+Option | Description | Default | Since
+--- | --- | --- | ---
+`defaultTimeZone` | Default timezone for timestamps without timezone specification (e.g., `Asia/Tokyo`, `Europe/Paris`, `America/New_York`). See [Timezone Behavior](#timezone-behavior) for detailed behavior. | `undefined` | v5.0.0
+
 ### stringify(obj, [options])
 
 Converts an object to a front-matter string.
@@ -55,6 +59,21 @@ Splits a YAML front-matter string.
 ### escape(str)
 
 Converts hard tabs to soft tabs.
+
+## Timezone Behavior
+
+Starting from `v5.0.0`, the timezone handling has been changed. Below is a comparison of the behavior between `v4.x` and `v5.x`:
+
+### Behavior Differences
+
+| Front-matter Timestamp | `defaultTimeZone` Option (typically from Hexo config) | v4.x Behavior | v5.x Behavior |
+|------------------------|---------------------------------------------|---------------|---------------|
+| With timezone<br>(e.g., `2025-01-01T12:00:00+08:00`) | Not specified | Uses machine's local timezone | Uses the specified timezone |
+| With timezone<br>(e.g., `2025-01-01T12:00:00+08:00`) | Specified | Uses machine's local timezone | Uses the specified timezone |
+| Without timezone<br>(e.g., `2025-01-01T12:00:00`) | Not specified | Uses machine's local timezone | Treats as UTC |
+| Without timezone<br>(e.g., `2025-01-01T12:00:00`) | Specified | Uses machine's local timezone | Uses `defaultTimeZone` |
+| Date only<br>(e.g., `2025-01-01`) | Not specified | Treats as 00:00:00 in machine's local timezone | Treats as 00:00:00 UTC |
+| Date only<br>(e.g., `2025-01-01`) | Specified | Treats as 00:00:00 in machine's local timezone | Treats as 00:00:00 in `defaultTimeZone` |
 
 ## License
 
