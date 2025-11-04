@@ -1,6 +1,6 @@
 {
   "name": "hexo-front-matter",
-  "version": "4.2.1",
+  "version": "5.0.0",
   "description": "Front-matter parser.",
   "main": "dist/front_matter",
   "scripts": {
@@ -44,6 +44,6 @@
     "typescript": "^5.2.2"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=20.19.0"
   }
 }
