@@ -46,11 +46,24 @@ Option | Description | Default | Since
 
 Converts an object to a front-matter string.
 
+In YAML mode, `Date` values are written with millisecond precision and an
+explicit UTC offset, using UTC by default. The `timeZone` option selects a
+different output timezone and accounts for daylight saving time. Date-like
+strings are quoted so they remain strings.
+Top-level `null` and `undefined` values are written as empty YAML values;
+both parse back as `null`.
+
+Offsets with sub-minute precision (found in some historical timezones) cannot
+be represented by this format and cause a `RangeError`. The parser currently
+misinterprets offsets between -00:29 and +00:29, excluding zero, so dates
+serialized with such offsets may not round-trip correctly.
+
 Option | Description | Default
 --- | --- | ---
 `mode` | The mode can be either `json` or `yaml`. | `yaml`
 `separator` | Separator | `---`
 `prefixSeparator` | Add prefixing separator. | `false`
+`timeZone` | Timezone for YAML `Date` values, e.g. `Asia/Shanghai`. Invalid timezones cause a `RangeError`. JSON dates remain in UTC. | `UTC`
 
 ### split(str)
 

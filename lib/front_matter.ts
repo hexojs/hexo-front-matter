@@ -1,4 +1,5 @@
-import { parse as ymlParse, stringify as ymlStringify } from 'yaml';
+import { Document, isMap, isScalar, parse as ymlParse } from 'yaml';
+import { DateTime } from 'luxon';
 import { timestampFactory } from './timestamp';
 const rPrefixSep = /^(-{3,}|;{3,})/;
 const rFrontMatter = /^(-{3,}|;{3,})\r?\n([\s\S]+?)\r?\n\1\r?\n?([\s\S]*)/;
@@ -93,7 +94,8 @@ function escapeYAML(str: string) {
 interface StringifyOptions {
   mode?: 'json' | '',
   prefixSeparator?: boolean,
-  separator?: string
+  separator?: string,
+  timeZone?: string
 }
 
 function stringify(obj, options: StringifyOptions = {}) {
@@ -113,7 +115,7 @@ function stringify(obj, options: StringifyOptions = {}) {
   if (mode === 'json') {
     result += stringifyJSON(obj);
   } else {
-    result += stringifyYAML(obj, {
+    result += stringifyYAML(obj, options.timeZone ?? 'UTC', {
       defaultStringType: 'PLAIN',
       singleQuote: true
     });
@@ -124,9 +126,13 @@ function stringify(obj, options: StringifyOptions = {}) {
   return result;
 }
 
-function stringifyYAML(obj, options) {
+function stringifyYAML(obj, timeZone: string, options) {
+  if (!DateTime.fromMillis(0, { zone: timeZone }).isValid) {
+    throw new RangeError(`Invalid time zone: ${timeZone}`);
+  }
+
   const keys = Object.keys(obj);
-  const data = {};
+  const data = new Map();
   const nullKeys = [];
   const dateKeys = [];
   let key, value, i, len;
@@ -140,26 +146,45 @@ function stringifyYAML(obj, options) {
     } else if (value instanceof Date) {
       dateKeys.push(key);
     } else {
-      data[key] = value;
+      data.set(key, value);
     }
   }
 
-  let result = ymlStringify(data, options);
+  for (key of dateKeys) {
+    data.set(key, obj[key]);
+  }
 
-  if (dateKeys.length) {
-    for (i = 0, len = dateKeys.length; i < len; i++) {
-      key = dateKeys[i];
-      result += `${key}: ${formatDate(obj[key])}\n`;
+  for (key of nullKeys) {
+    data.set(key, null);
+  }
+
+  // Match the parser's timestamp schema so date-like strings and keys are
+  // quoted, while Date values retain an explicit timezone for round trips.
+  const timestamp = {
+    ...timestampFactory(undefined),
+    stringify: ({ value }) => {
+      const dateTime = DateTime.fromJSDate(value as Date, { zone: timeZone });
+      if (!dateTime.isValid) throw new RangeError('Invalid Date');
+      // ISO offsets have minute precision; historical IANA offsets may not.
+      if (!Number.isInteger(dateTime.offset)) {
+        throw new RangeError(`Time zone offset has sub-minute precision: ${timeZone}`);
+      }
+      return dateTime.toISO();
+    }
+  };
+  const doc = new Document(data, { customTags: [timestamp] });
+
+  // Preserve the existing empty representation for top-level null values
+  // without changing how nested nulls are serialized.
+  if (isMap(doc.contents)) {
+    for (const pair of doc.contents.items) {
+      if (isScalar(pair.value) && pair.value.value === null) {
+        pair.value.source = '';
+      }
     }
   }
 
-  if (nullKeys.length) {
-    for (i = 0, len = nullKeys.length; i < len; i++) {
-      result += `${nullKeys[i]}:\n`;
-    }
-  }
-
-  return result;
+  return doc.toString(options);
 }
 
 function stringifyJSON(obj) {
@@ -168,14 +193,6 @@ function stringifyJSON(obj) {
     .replace(/\r?\n {2}/g, () => '\n')
     // Remove prefixing and trailing braces
     .replace(/^{\r?\n|}$/g, '');
-}
-
-function doubleDigit(num) {
-  return num.toString().padStart(2, '0');
-}
-
-function formatDate(date) {
-  return `${date.getFullYear()}-${doubleDigit(date.getMonth() + 1)}-${doubleDigit(date.getDate())} ${doubleDigit(date.getHours())}:${doubleDigit(date.getMinutes())}:${doubleDigit(date.getSeconds())}`;
 }
 
 export {

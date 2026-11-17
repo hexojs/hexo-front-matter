@@ -437,7 +437,7 @@ describe('Front-matter', () => {
 
       yfm.stringify(data).should.eql([
         'layout: post',
-        `created: ${now}`,
+        `created: '${now}'`,
         'blank:',
         '---',
         '123'
@@ -529,11 +529,131 @@ describe('Front-matter', () => {
 
       yfm.stringify(data).should.eql([
         'layout: post',
-        'created: 1995-12-17 03:24:00',
+        `created: ${now.toISOString()}`,
         'blank:',
         '---',
         '123'
       ].join('\n'));
+    });
+
+    it('round trips front matter containing only dates or empty values', () => {
+      const date = new Date('2026-01-02T03:04:05.123Z');
+      const dateOutput = yfm.stringify({ date, _content: 'Hello' });
+      dateOutput.should.eql(`date: ${date.toISOString()}\n---\nHello`);
+      yfm.parse(dateOutput).should.eql({ date, _content: 'Hello' });
+
+      const nullOutput = yfm.stringify({ title: null, missing: undefined, _content: 'Hello' });
+      nullOutput.should.eql('title:\nmissing:\n---\nHello');
+      yfm.parse(nullOutput).should.eql({ title: null, missing: null, _content: 'Hello' });
+    });
+
+    it('round trips special keys for dates and empty values', () => {
+      const date = new Date('2026-01-02T03:04:05.000Z');
+      const data = {
+        title: 'x',
+        '#k': null,
+        'a: b': null,
+        '2026-01-02': null,
+        'date: key': date,
+        'line\nbreak': date,
+        _content: 'Hello'
+      };
+      const expected = { ...data };
+
+      for (const options of [{}, { prefixSeparator: true, separator: '------' }]) {
+        const output = yfm.stringify({ ...data }, options);
+        yfm.parse(output).should.eql(expected);
+      }
+    });
+
+    it('preserves date instants independently of the parsing timezone', () => {
+      const date = new Date('2026-01-02T03:04:05.123Z');
+      const output = yfm.stringify({ date, _content: '' });
+
+      for (const defaultTimeZone of ['UTC', 'Asia/Shanghai', 'America/New_York']) {
+        yfm.parse(output, { defaultTimeZone }).should.eql({ date, _content: '' });
+      }
+    });
+
+    it('stringifies dates in the requested timezone, including nested dates', () => {
+      const date = new Date('2025-01-01T04:00:00.123Z');
+      const output = yfm.stringify({ date, nested: { date: new Date(date) }, _content: 'Hello' }, {
+        timeZone: 'Asia/Shanghai'
+      });
+
+      output.should.contain('date: 2025-01-01T12:00:00.123+08:00');
+      output.should.contain('  date: 2025-01-01T12:00:00.123+08:00');
+      yfm.parse(output, { defaultTimeZone: 'America/New_York' })
+        .should.eql({ date, nested: { date }, _content: 'Hello' });
+    });
+
+    it('uses the timezone offset at each date, including daylight saving time', () => {
+      const winter = new Date('2025-01-01T12:00:00.000Z');
+      const summer = new Date('2025-07-01T12:00:00.000Z');
+      const output = yfm.stringify({ winter, summer, _content: '' }, {
+        timeZone: 'America/New_York'
+      });
+
+      output.should.contain('winter: 2025-01-01T07:00:00.000-05:00');
+      output.should.contain('summer: 2025-07-01T08:00:00.000-04:00');
+      yfm.parse(output).should.eql({ winter, summer, _content: '' });
+    });
+
+    it('supports timezone offsets with fractional hours', () => {
+      const date = new Date('2025-01-01T00:00:00.000Z');
+      const output = yfm.stringify({ date, _content: '' }, { timeZone: 'Asia/Kathmandu' });
+
+      output.should.eql('date: 2025-01-01T05:45:00.000+05:45\n---\n');
+      yfm.parse(output).should.eql({ date, _content: '' });
+    });
+
+    it('serializes offsets below 30 minutes without changing the parser', () => {
+      const date = new Date('2025-01-01T00:00:00.000Z');
+      const output = yfm.stringify({ date, _content: '' }, { timeZone: 'UTC+0:15' });
+
+      output.should.eql('date: 2025-01-01T00:15:00.000+00:15\n---\n');
+    });
+
+    it('rejects historical offsets that include seconds', function() {
+      const date = new Date('1900-01-01T00:00:00.000Z');
+      const timeZone = 'Europe/Paris';
+      if (Number.isInteger(DateTime.fromJSDate(date, { zone: timeZone }).offset)) this.skip();
+
+      (() => yfm.stringify({ date, _content: '' }, { timeZone }))
+        .should.throw(RangeError, 'Time zone offset has sub-minute precision');
+    });
+
+    it('rejects invalid timezones and invalid dates in YAML mode', () => {
+      (() => yfm.stringify({ date: new Date(), _content: '' }, { timeZone: 'Invalid/Zone' }))
+        .should.throw(RangeError, 'Invalid time zone');
+      (() => yfm.stringify({ date: new Date(NaN), _content: '' }))
+        .should.throw(RangeError, 'Invalid Date');
+    });
+
+    it('leaves JSON date serialization in UTC regardless of the timezone option', () => {
+      const date = new Date('2025-01-01T04:00:00.123Z');
+      const output = yfm.stringify({ date, _content: '' }, {
+        mode: 'json',
+        timeZone: 'Asia/Shanghai'
+      });
+
+      output.should.eql('"date": "2025-01-01T04:00:00.123Z"\n;;;\n');
+    });
+
+    it('quotes date-like strings and keeps nested null formatting', () => {
+      const date = new Date('2026-01-02T03:04:05.123Z');
+      const data = {
+        dateText: '2026-01-02',
+        nested: { date, blank: null },
+        blank: null,
+        _content: 'Hello'
+      };
+      const output = yfm.stringify({ ...data });
+
+      output.should.contain('dateText: \'2026-01-02\'');
+      output.should.contain('  blank: null');
+      output.should.contain('\nblank:\n');
+      yfm.parse(output).should.eql(data);
     });
   });
 });
